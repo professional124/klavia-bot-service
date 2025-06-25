@@ -148,4 +148,3 @@ async def start_task(
 async def active_tasks():
     with open(TASKS_FILE, "r") as f:
         return json.load(f)
-
