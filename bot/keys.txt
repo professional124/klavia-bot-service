@@ -1,1 +1,10 @@
+# Format: key_string|slots
+# Example:
+abc123xyz|3
+superkey456|1
+vipkey789|5
+
+# Add your keys below this line (no spaces around pipe symbol):
+# key1|slots
+# key2|slots
 
