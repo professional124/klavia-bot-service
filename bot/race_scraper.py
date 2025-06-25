@@ -21,4 +21,3 @@ def extract_race_text(html: str) -> str:
         elif element.string:
             output += element.string
     return output.strip()
-
