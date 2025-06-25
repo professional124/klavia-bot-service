@@ -1,150 +1,94 @@
-
-# main.py
-# Klavia.io Bot - Full Automation Script
-# Author: ChatGPT + Ethan
-# Monolithic version, includes: FastAPI server, Playwright automation, Key verification, Task queue
-
 import asyncio
 import json
 import os
-import random
-import time
-from fastapi import FastAPI, Request, Form, HTTPException
-from pydantic import BaseModel
-from typing import List
-from starlette.responses import HTMLResponse
-from playwright.async_api import async_playwright
-from datetime import datetime
+from flask import Flask, request, jsonify, render_template_string
+from task_runner import TaskRunner
 
-# Load keys with slot limits
-KEY_FILE = "keys.txt"
-TASKS_FILE = "task_data.json"
-LOG_DIR = "logs"
+app = Flask(__name__)
 
-if not os.path.exists(LOG_DIR):
-    os.makedirs(LOG_DIR)
+task_runner = TaskRunner()
 
-def load_keys():
-    keys = {}
-    if os.path.exists(KEY_FILE):
-        with open(KEY_FILE, "r") as f:
-            for line in f:
-                if ":" in line:
-                    k, slots = line.strip().split(":")
-                    keys[k.strip()] = int(slots)
-    return keys
+# Simple home page
+HOME_HTML = """
+<!DOCTYPE html>
+<html>
+<head><title>Klavia Bot</title></head>
+<body>
+<h1>Klavia Bot Running</h1>
+<p>Use POST /start-task with JSON to queue a race task.</p>
+</body>
+</html>
+"""
 
-def save_task(task):
+@app.route('/')
+def home():
+    return render_template_string(HOME_HTML)
+
+@app.route('/start-task', methods=['POST'])
+def start_task():
+    data = request.json
+    required_fields = ['username', 'password', 'wpm', 'accuracy', 'races', 'key']
+
+    # Validate input presence
+    missing = [f for f in required_fields if f not in data]
+    if missing:
+        return jsonify({"error": f"Missing fields: {', '.join(missing)}"}), 400
+
+    # Validate key
+    key = data['key']
+    if key not in task_runner.key_slots:
+        return jsonify({"error": "Invalid or unauthorized key"}), 403
+
+    # Check slot availability
+    if not task_runner.can_start_task(key):
+        return jsonify({"error": "No available slots for this key. Try later."}), 429
+
+    # Validate WPM, accuracy, races numeric ranges (example limits)
     try:
-        with open(TASKS_FILE, "r") as f:
-            data = json.load(f)
-    except:
-        data = []
+        wpm = int(data['wpm'])
+        accuracy = int(data['accuracy'])
+        races = int(data['races'])
+    except ValueError:
+        return jsonify({"error": "WPM, accuracy, and races must be integers"}), 400
 
-    data.append(task)
-    with open(TASKS_FILE, "w") as f:
-        json.dump(data, f, indent=2)
+    if not (10 <= wpm <= 180):
+        return jsonify({"error": "WPM must be between 10 and 180"}), 400
+    if not (85 <= accuracy <= 100):
+        return jsonify({"error": "Accuracy must be between 85 and 100"}), 400
+    if races < 1:
+        return jsonify({"error": "Races must be at least 1"}), 400
 
-def purge_finished_tasks():
-    try:
-        with open(TASKS_FILE, "r") as f:
-            tasks = json.load(f)
-        tasks = [t for t in tasks if not t.get("finished", False)]
-        with open(TASKS_FILE, "w") as f:
-            json.dump(tasks, f, indent=2)
-    except:
-        pass
-
-async def run_bot(task):
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
-        context = await browser.new_context()
-        page = await context.new_page()
-
-        try:
-            # Go to login
-            await page.goto("https://klavia.io/racers/sign_in")
-            await page.fill("#racer_email", task["username"])
-            await page.fill("#racer_password", task["password"])
-            await page.click('input[type="submit"][value="Sign In"]')
-            await page.wait_for_timeout(3000)
-
-            # Go to Quick Race
-            await page.goto("https://klavia.io/race")
-            await page.wait_for_selector("#typing-text")
-
-            for race_num in range(task["races"]):
-                text = await page.eval_on_selector("#typing-text", "el => el.innerText")
-                await page.click("#typing-text")  # Focus typing
-                delay = 60 / (task["wpm"] * 5)  # Estimate: 1 word = 5 chars
-                for char in text:
-                    if random.random() < 0.015:
-                        await page.keyboard.press("Backspace")
-                    await page.keyboard.type(char, delay=delay * random.uniform(0.9, 1.3))
-                await page.keyboard.press("Enter")
-                await page.wait_for_timeout(3500)
-
-            log_path = os.path.join(LOG_DIR, f"{task['username']}_{int(time.time())}.txt")
-            with open(log_path, "w") as f:
-                f.write(f"Bot completed {task['races']} races for {task['username']} at {datetime.now()}\n")
-            task["finished"] = True
-        except Exception as e:
-            task["error"] = str(e)
-        finally:
-            await context.close()
-            await browser.close()
-
-        purge_finished_tasks()
-
-# ========== FASTAPI BACKEND ==========
-app = FastAPI()
-
-@app.get("/", response_class=HTMLResponse)
-async def home():
-    return """
-    <html>
-      <body>
-        <h1>Klavia Bot Running</h1>
-        <p>Submit form at <code>/start-task</code></p>
-      </body>
-    </html>
-    """
-
-@app.post("/start-task")
-async def start_task(
-    username: str = Form(...),
-    password: str = Form(...),
-    wpm: int = Form(...),
-    accuracy: int = Form(...),
-    races: int = Form(...),
-    key: str = Form(...)
-):
-    # Check if key exists and user has slot available
-    keys = load_keys()
-    if key not in keys:
-        raise HTTPException(status_code=401, detail="Invalid key")
-
-    # Check current usage
-    with open(TASKS_FILE, "r") as f:
-        existing = json.load(f)
-    key_usage = sum(1 for t in existing if t["key"] == key and not t.get("finished", False))
-    if key_usage >= keys[key]:
-        raise HTTPException(status_code=403, detail="Key slot limit reached")
-
+    # Prepare task object
     task = {
-        "username": username,
-        "password": password,
+        "username": data['username'],
+        "password": data['password'],
         "wpm": wpm,
         "accuracy": accuracy,
-        "races": races,
-        "key": key,
-        "timestamp": datetime.now().isoformat()
+        "races_total": races,
+        "key_used": key,
+        "status": "pending",
+        "races_completed": 0,
+        "started_at": None,
+        "ended_at": None,
+        "last_error": None
     }
-    save_task(task)
-    asyncio.create_task(run_bot(task))
-    return {"status": "started", "task": task}
 
-@app.get("/active-tasks")
-async def active_tasks():
-    with open(TASKS_FILE, "r") as f:
-        return json.load(f)
+    # Add task
+    task_runner.add_task(task)
+
+    return jsonify({"message": "Task queued successfully", "task_id": task["task_id"]})
+
+# Run Flask and asyncio worker loop together
+def run_app_and_worker():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    # Run Flask app in a separate thread so asyncio loop can run simultaneously
+    import threading
+    threading.Thread(target=lambda: app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False), daemon=True).start()
+
+    # Run async worker loop forever
+    loop.run_until_complete(task_runner.worker_loop())
+
+if __name__ == '__main__':
+    run_app_and_worker()
