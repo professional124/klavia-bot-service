@@ -3,254 +3,174 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Klavia Bot — Automate Your Races with Ease</title>
-  
-  <!-- Favicon -->
-  <link rel="icon" href="/static/favicon.ico" />
-  
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  
-  <!-- Styles -->
+  <title>Klavia Bot - Intelligent Typing Automation</title>
+  <link rel="stylesheet" href="styles.css" />
   <style>
-    /* Reset & basics */
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
+    /* Minimal critical CSS for layout and neon vibes */
     body {
-      margin: 0; padding: 0;
-      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #121212; /* Dark mode base */
-      color: #e0e0e0;
-      line-height: 1.6;
+      margin: 0;
+      background-color: #0a0f14;
+      color: #d1f7f3;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
-    a {
-      color: #1de9b6; /* Teal accent */
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-    a:hover,
-    a:focus {
-      color: #00bfa5;
-      outline: none;
-    }
-    
-    /* Container */
-    .container {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 1rem 1.5rem;
-    }
-    
-    /* Header/Nav */
     header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 1rem 0;
-      border-bottom: 1px solid #222;
+      padding: 1rem 2rem;
+      background-color: #04171f;
+      box-shadow: 0 0 15px #00bfa5aa;
       position: sticky;
       top: 0;
-      background-color: #121212cc; /* slightly transparent */
-      backdrop-filter: saturate(180%) blur(10px);
-      z-index: 999;
+      z-index: 1000;
     }
-    header .logo {
+    header img.logo {
+      height: 50px;
+      width: auto;
+      margin-right: 1rem;
+      filter: drop-shadow(0 0 6px #00bfa5);
+    }
+    header h1 {
       font-weight: 700;
-      font-size: 1.5rem;
-      color: #1de9b6;
-      letter-spacing: 0.05em;
+      font-size: 1.8rem;
+      letter-spacing: 1.2px;
+      color: #00bfa5;
+      text-shadow: 0 0 8px #00bfa5cc;
       user-select: none;
     }
-    nav ul {
-      list-style: none;
+    nav {
+      margin-left: auto;
       display: flex;
-      gap: 1.5rem;
-      margin: 0; padding: 0;
+      gap: 2rem;
     }
-    nav ul li {
-      position: relative;
-    }
-    nav ul li a {
-      font-weight: 500;
+    nav a {
+      color: #7df3ec;
+      text-decoration: none;
+      font-weight: 600;
       font-size: 1rem;
-      padding: 0.25rem 0;
-      display: inline-block;
-      border-bottom: 2px solid transparent;
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
     }
-    nav ul li a:hover,
-    nav ul li a:focus {
-      border-bottom-color: #1de9b6;
-    }
-    
-    /* Hero Section */
-    .hero {
-      margin-top: 3rem;
-      text-align: center;
-      padding: 3rem 1rem;
-      background: linear-gradient(135deg, #00bfa5dd 0%, #004d40dd 100%);
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0, 191, 165, 0.4);
-      color: #fff;
-    }
-    .hero h1 {
-      font-size: 2.75rem;
-      margin-bottom: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-    }
-    .hero p {
-      font-size: 1.25rem;
-      max-width: 600px;
-      margin: 0 auto 2.5rem auto;
-      line-height: 1.4;
-      font-weight: 500;
-    }
-    .hero .btn-primary {
+    nav a:hover,
+    nav a:focus {
       background-color: #00bfa5;
-      color: #121212;
-      padding: 0.85rem 2rem;
-      font-size: 1.15rem;
+      color: #021314;
+      outline: none;
+    }
+    main {
+      max-width: 960px;
+      margin: 3rem auto;
+      padding: 0 1rem;
+      text-align: center;
+    }
+    main h2 {
+      font-size: 2.4rem;
+      margin-bottom: 0.5rem;
+      color: #00e0d0;
+      text-shadow: 0 0 6px #00bfa5aa;
+    }
+    main p.lead {
+      font-size: 1.25rem;
+      color: #a0fff7;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+    .cta-button {
+      background-color: #00bfa5;
+      color: #021314;
       font-weight: 700;
+      font-size: 1.2rem;
+      padding: 0.9rem 2.5rem;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      box-shadow: 0 0 15px #00bfa5aa;
       transition: background-color 0.3s ease;
-      box-shadow: 0 4px 12px #00bfa5aa;
+      user-select: none;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 3rem;
     }
-    .hero .btn-primary:hover,
-    .hero .btn-primary:focus {
-      background-color: #007961;
+    .cta-button:hover,
+    .cta-button:focus {
+      background-color: #00e0d0;
       outline: none;
-      box-shadow: 0 6px 20px #007961cc;
     }
-    
-    /* Features Section */
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-      gap: 2rem;
-      margin: 4rem 0;
-    }
-    .feature-card {
-      background-color: #1e1e1e;
-      padding: 1.75rem 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .feature-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 28px #00bfa5cc;
-    }
-    .feature-card h3 {
-      margin-top: 0;
-      font-weight: 600;
-      color: #1de9b6;
-      font-size: 1.25rem;
-      margin-bottom: 0.5rem;
-    }
-    .feature-card p {
-      color: #bdbdbd;
-      font-weight: 400;
-      line-height: 1.4;
-      font-size: 0.95rem;
-    }
-    
-    /* Footer */
     footer {
-      margin-top: 4rem;
+      background-color: #04171f;
+      color: #004d4a;
       text-align: center;
       padding: 1rem 0;
-      border-top: 1px solid #222;
-      font-size: 0.875rem;
-      color: #666;
+      font-size: 0.9rem;
       user-select: none;
-    }
-    
-    /* Responsive tweaks */
-    @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 2rem;
-      }
-      .hero p {
-        font-size: 1rem;
-      }
-      nav ul {
-        flex-direction: column;
-        gap: 0.8rem;
-      }
+      box-shadow: inset 0 1px 5px #00bfa5aa;
     }
   </style>
 </head>
 <body>
-  <header class="container" role="banner">
-    <div class="logo" tabindex="0">Klavia Bot</div>
-    <nav role="navigation" aria-label="Primary Navigation">
-      <ul>
-        <li><a href="index.html" aria-current="page">Home</a></li>
-        <li><a href="pricing.html">Pricing</a></li>
-        <li><a href="tasks.html">Tasks</a></li>
-        <li><a href="submit.html">Submit Task</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="admin.html">Admin</a></li>
-      </ul>
+  <header>
+    <img src="logo.png" alt="Klavia Bot Logo" class="logo" />
+    <h1>Klavia Bot</h1>
+    <nav>
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="submit.html">Start Bot</a>
+      <a href="contact.html">Contact</a>
+      <a href="admin.html">Admin</a>
     </nav>
   </header>
 
-  <main class="container" role="main">
-    <section class="hero" aria-labelledby="hero-title">
-      <h1 id="hero-title">Automate Your Klavia.io Races Seamlessly</h1>
-      <p>Boost your race stats with our stealthy, customizable Klavia bot. Secure, fast, and reliable automation designed to maximize your performance and save you time.</p>
-      <button class="btn-primary" onclick="window.location.href='submit.html'">Get Started</button>
+  <main>
+    <h2>Revolutionize Your Typing Races</h2>
+    <p class="lead">
+      Klavia Bot offers seamless, intelligent automation for Klavia.io typing races — 
+      set your preferred speed, accuracy, and number of races, then watch the bot do the rest.  
+      Stealthy, efficient, and easy to use, Klavia Bot is your competitive edge.
+    </p>
+    <button class="cta-button" onclick="window.location.href='submit.html'">Get Started</button>
+
+    <section aria-label="Live Stats">
+      <h3>Live Botted Accounts</h3>
+      <p id="live-accounts" style="font-size:1.8rem; color:#00bfa5; user-select:none;">Loading...</p>
     </section>
 
-    <section class="features" aria-label="Key Features">
-      <article class="feature-card" tabindex="0">
-        <h3>Stealth Mode & Anti-Detection</h3>
-        <p>Our bot mimics human typing with natural speed fluctuations and random typos, keeping you under the radar and safe from bans.</p>
-      </article>
-      <article class="feature-card" tabindex="0">
-        <h3>Live Task Monitoring</h3>
-        <p>Track your active tasks in real-time with our dashboard, see progress and easily manage your queue.</p>
-      </article>
-      <article class="feature-card" tabindex="0">
-        <h3>Flexible Slot Keys</h3>
-        <p>Purchase keys with customizable slot counts. Control how many concurrent tasks your subscription allows.</p>
-      </article>
-      <article class="feature-card" tabindex="0">
-        <h3>Responsive & Accessible</h3>
-        <p>Fully mobile-friendly and built with accessibility in mind — use the bot anywhere, anytime.</p>
-      </article>
-      <article class="feature-card" tabindex="0">
-        <h3>24/7 Hosted on Render</h3>
-        <p>Enjoy reliable uptime and quick task execution with our Render-powered backend.</p>
-      </article>
-      <article class="feature-card" tabindex="0">
-        <h3>Dedicated Support</h3>
-        <p>Our friendly team is ready to assist you with setup, troubleshooting, and optimization tips.</p>
-      </article>
+    <section aria-label="Features" style="margin-top:3rem; text-align:left;">
+      <h3>Why Choose Klavia Bot?</h3>
+      <ul style="color:#a0fff7; font-size:1.1rem; max-width:600px; margin:auto; line-height:1.6;">
+        <li>24/7 automated botting with full key authentication</li>
+        <li>Set custom WPM, accuracy, and race count per task</li>
+        <li>Undetectable stealth mode for safe use</li>
+        <li>Real-time task tracking and live stats</li>
+        <li>Admin dashboard to manage keys and users</li>
+        <li>Clean, modern UI with dark neon theme</li>
+        <li>Automatic recovery and error handling</li>
+      </ul>
     </section>
   </main>
 
-  <footer role="contentinfo">
-    <div class="container">
-      &copy; 2025 Klavia Bot • Designed with ❤️ by Ethan
-    </div>
+  <footer>
+    &copy; 2025 Klavia Bot. All rights reserved.
   </footer>
-  
-  <!-- Optional: minimal client-side script for smooth scrolling or interactivity -->
+
   <script>
-    // Example smooth scroll for anchor links if needed in future
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e){
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if(target) target.scrollIntoView({behavior: 'smooth'});
-      });
-    });
+    // Example live stats fetch simulation
+    async function fetchLiveAccounts() {
+      try {
+        // Replace this URL with your actual API endpoint
+        const response = await fetch('/api/live-accounts');
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        document.getElementById('live-accounts').textContent = data.activeTasks || '0';
+      } catch {
+        document.getElementById('live-accounts').textContent = 'Unavailable';
+      }
+    }
+    fetchLiveAccounts();
+    setInterval(fetchLiveAccounts, 15000); // Refresh every 15s
   </script>
 </body>
 </html>
