@@ -1,1 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Submit Task - Klavia Bot</title>
 
+  <!-- Favicon -->
+  <link rel="icon" href="/static/favicon.ico" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <style>
+    /* Base and reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a {
+      color: #1de9b6;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover,
+    a:focus {
+      color: #00bfa5;
+      outline: none;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 2rem auto 4rem auto;
+      padding: 0 1.5rem;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      background-color: #121212cc;
+      backdrop-filter: saturate(180%) blur(10px);
+      z-index: 999;
+    }
+    header .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #1de9b6;
+      letter-spacing: 0.05em;
+      user-select: none;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      margin: 0; padding: 0;
+    }
+    nav ul li {
+      position: relative;
+    }
+    nav ul li a {
+      font-weight: 500;
+      font-size: 1rem;
+      padding: 0.25rem 0;
+      display: inline-block;
+      border-bottom: 2px solid transparent;
+    }
+    nav ul li a:hover,
+    nav ul li a:focus {
+      border-bottom-color: #1de9b6;
+    }
+    nav ul li a[aria-current="page"] {
+      border-bottom-color: #00bfa5;
+      font-weight: 600;
+    }
+
+    main {
+      margin-top: 2rem;
+      padding-bottom: 3rem;
+    }
+    h1 {
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #00bfa5;
+      text-align: center;
+    }
+    p.lead {
+      text-align: center;
+      font-size: 1.15rem;
+      margin-bottom: 2rem;
+      color: #a0a0a0;
+      user-select: none;
+    }
+
+    form {
+      background-color: #1e1e1e;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #1de9b6;
+    }
+    input[type="text"],
+    input[type="password"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #2fa2c7;
+      border-radius: 8px;
+      background-color: #121212;
+      color: #e0e0e0;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.3s ease;
+      resize: vertical;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="number"]:focus,
+    textarea:focus {
+      border-color: #00bfa5;
+      outline: none;
+      box-shadow: 0 0 10px #00bfa5aa;
+    }
+
+    /* Number input tweaks */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    button[type="submit"] {
+      background-color: #00bfa5;
+      color: #121212;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      display: block;
+      margin: 0 auto;
+      min-width: 140px;
+    }
+    button[type="submit"]:hover,
+    button[type="submit"]:focus {
+      background-color: #007961;
+      outline: none;
+      box-shadow: 0 0 14px #007961cc;
+    }
+
+    .form-error {
+      color: #ff5252;
+      font-size: 0.9rem;
+      margin-top: -1rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      main {
+        margin-top: 1.5rem;
+        padding: 0 1rem;
+      }
+      form {
+        padding: 1.5rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="container" role="banner">
+    <div class="logo" tabindex="0">Klavia Bot</div>
+    <nav role="navigation" aria-label="Primary Navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="tasks.html">Tasks</a></li>
+        <li><a href="submit.html" aria-current="page">Submit Task</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="admin.html">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container" role="main" tabindex="0">
+    <h1>Submit a New Task</h1>
+    <p class="lead">Fill out the form below to add a botting task to the queue.</p>
+
+    <form id="submit-task-form" action="/start-task" method="POST" novalidate>
+      <label for="username">Username <span aria-hidden="true">*</span></label>
+      <input type="text" id="username" name="username" placeholder="Username" required aria-required="true" autocomplete="username" />
+
+      <label for="password">Password <span aria-hidden="true">*</span></label>
+      <input type="password" id="password" name="password" placeholder="Password" required aria-required="true" autocomplete="current-password" />
+
+      <label for="avg_wpm">Average WPM (10–180) <span aria-hidden="true">*</span></label>
+      <input type="number" id="avg_wpm" name="avg_wpm" placeholder="e.g., 75" min="10" max="180" required aria-required="true" />
+
+      <label for="min_accuracy">Minimum Accuracy (85–97%) <span aria-hidden="true">*</span></label>
+      <input type="number" id="min_accuracy" name="min_accuracy" placeholder="e.g., 90" min="85" max="97" required aria-required="true" />
+
+      <label for="races_count">Number of Races <span aria-hidden="true">*</span></label>
+      <input type="number" id="races_count" name="races_count" placeholder="e.g., 50" min="1" required aria-required="true" />
+
+      <label for="subscription_key">Subscription Key <span aria-hidden="true">*</span></label>
+      <input type="text" id="subscription_key" name="subscription_key" placeholder="Your subscription key" required aria-required="true" autocomplete="off" />
+
+      <button type="submit">Add Task</button>
+    </form>
+  </main>
+
+  <script>
+    // Basic client-side validation with feedback
+    const form = document.getElementById('submit-task-form');
+    form.addEventListener('submit', function(e) {
+      // Example: you can enhance this with better UX or AJAX submission
+      if (!form.checkValidity()) {
+        e.preventDefault();
+        alert('Please fill out all required fields correctly.');
+      }
+    });
+  </script>
+</body>
+</html>
