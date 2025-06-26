@@ -1,1 +1,289 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Klavia Bot Pricing Plans</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="/static/favicon.ico" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <style>
+    /* Reset & basics */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a {
+      color: #1de9b6;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover,
+    a:focus {
+      color: #00bfa5;
+      outline: none;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+    }
+
+    /* Header/Nav (same style as index.html) */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      background-color: #121212cc;
+      backdrop-filter: saturate(180%) blur(10px);
+      z-index: 999;
+    }
+    header .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #1de9b6;
+      letter-spacing: 0.05em;
+      user-select: none;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      margin: 0; padding: 0;
+    }
+    nav ul li {
+      position: relative;
+    }
+    nav ul li a {
+      font-weight: 500;
+      font-size: 1rem;
+      padding: 0.25rem 0;
+      display: inline-block;
+      border-bottom: 2px solid transparent;
+    }
+    nav ul li a:hover,
+    nav ul li a:focus {
+      border-bottom-color: #1de9b6;
+    }
+
+    /* Page Header */
+    .page-header {
+      margin: 3rem 0 2rem;
+      text-align: center;
+    }
+    .page-header h1 {
+      font-size: 2.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.5rem;
+      color: #00bfa5;
+    }
+    .page-header p {
+      font-weight: 500;
+      font-size: 1.2rem;
+      color: #a0a0a0;
+    }
+
+    /* Pricing Grid */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+      margin-bottom: 4rem;
+    }
+    .pricing-card {
+      background-color: #1e1e1e;
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .pricing-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 28px #00bfa5cc;
+    }
+
+    .pricing-card h2 {
+      font-weight: 700;
+      font-size: 1.75rem;
+      color: #1de9b6;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .pricing-price {
+      font-weight: 700;
+      font-size: 2.5rem;
+      color: #00bfa5;
+      text-align: center;
+      margin-bottom: 1.25rem;
+    }
+    .pricing-duration {
+      text-align: center;
+      color: #a0a0a0;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .pricing-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 2rem;
+      color: #c0c0c0;
+      font-size: 1rem;
+    }
+    .pricing-features li {
+      margin-bottom: 0.75rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+    .pricing-features li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #00bfa5;
+      font-weight: 700;
+    }
+
+    /* Button */
+    .btn-primary {
+      background-color: #00bfa5;
+      color: #121212;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 0.75rem 0;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+      text-align: center;
+      user-select: none;
+      box-shadow: 0 6px 12px #00bfa5aa;
+    }
+    .btn-primary:hover,
+    .btn-primary:focus {
+      background-color: #007961;
+      outline: none;
+      box-shadow: 0 8px 20px #007961cc;
+    }
+
+    /* Footer (same style as index.html) */
+    footer {
+      margin-top: 4rem;
+      text-align: center;
+      padding: 1rem 0;
+      border-top: 1px solid #222;
+      font-size: 0.875rem;
+      color: #666;
+      user-select: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .page-header h1 {
+        font-size: 2rem;
+      }
+      .page-header p {
+        font-size: 1rem;
+      }
+      nav ul {
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="container" role="banner">
+    <div class="logo" tabindex="0">Klavia Bot</div>
+    <nav role="navigation" aria-label="Primary Navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pricing.html" aria-current="page">Pricing</a></li>
+        <li><a href="tasks.html">Tasks</a></li>
+        <li><a href="submit.html">Submit Task</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="admin.html">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container" role="main">
+    <header class="page-header">
+      <h1>Choose Your Plan</h1>
+      <p>Flexible subscriptions tailored to fit your automation needs. Pay securely and get instant access.</p>
+    </header>
+
+    <section class="pricing-grid" aria-label="Pricing Options">
+      <article class="pricing-card" tabindex="0" aria-describedby="basic-desc">
+        <h2>Basic</h2>
+        <div class="pricing-price">$5</div>
+        <div class="pricing-duration">per month</div>
+        <ul class="pricing-features" id="basic-desc">
+          <li>1 Slot Key (1 concurrent task)</li>
+          <li>Stealth Mode Enabled</li>
+          <li>Live Task Monitoring</li>
+          <li>Email Support</li>
+        </ul>
+        <button class="btn-primary" onclick="window.location.href='submit.html'">Get Started</button>
+      </article>
+
+      <article class="pricing-card" tabindex="0" aria-describedby="pro-desc">
+        <h2>Pro</h2>
+        <div class="pricing-price">$15</div>
+        <div class="pricing-duration">per month</div>
+        <ul class="pricing-features" id="pro-desc">
+          <li>5 Slot Keys (5 concurrent tasks)</li>
+          <li>Priority Support</li>
+          <li>Auto-Retry on Failures</li>
+          <li>Detailed Bot Logs</li>
+          <li>Access to Beta Features</li>
+        </ul>
+        <button class="btn-primary" onclick="window.location.href='submit.html'">Get Started</button>
+      </article>
+
+      <article class="pricing-card" tabindex="0" aria-describedby="ultimate-desc">
+        <h2>Ultimate</h2>
+        <div class="pricing-price">$30</div>
+        <div class="pricing-duration">per month</div>
+        <ul class="pricing-features" id="ultimate-desc">
+          <li>Unlimited Slots</li>
+          <li>Dedicated Account Manager</li>
+          <li>24/7 Priority Support</li>
+          <li>Advanced Analytics Dashboard</li>
+          <li>Custom Bot Configurations</li>
+        </ul>
+        <button class="btn-primary" onclick="window.location.href='submit.html'">Get Started</button>
+      </article>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      &copy; 2025 Klavia Bot • Designed with ❤️ by Ethan
+    </div>
+  </footer>
+</body>
+</html>
