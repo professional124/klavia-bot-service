@@ -1,1 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Active Tasks - Klavia Bot</title>
 
+  <link rel="icon" href="/static/favicon.ico" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Reset and base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #121212;
+      color: #eee;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a {
+      color: #1de9b6;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover, a:focus {
+      color: #00bfa5;
+      outline: none;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 2rem auto 4rem auto;
+      padding: 0 1.5rem;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      background-color: #121212cc;
+      backdrop-filter: saturate(180%) blur(10px);
+      z-index: 999;
+    }
+    header .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #1de9b6;
+      letter-spacing: 0.05em;
+      user-select: none;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      margin: 0; padding: 0;
+    }
+    nav ul li {
+      position: relative;
+    }
+    nav ul li a {
+      font-weight: 500;
+      font-size: 1rem;
+      padding: 0.25rem 0;
+      display: inline-block;
+      border-bottom: 2px solid transparent;
+    }
+    nav ul li a:hover,
+    nav ul li a:focus {
+      border-bottom-color: #1de9b6;
+    }
+    nav ul li a[aria-current="page"] {
+      border-bottom-color: #00bfa5;
+      font-weight: 600;
+    }
+
+    main {
+      margin-top: 2rem;
+      padding-bottom: 3rem;
+    }
+    h1 {
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #00bfa5;
+      text-align: center;
+    }
+
+    /* Table styles */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 20px #00bfa5aa;
+      background-color: #1e1e1e;
+      user-select: none;
+      font-size: 1rem;
+    }
+    thead {
+      background-color: #00bfa5;
+      color: #121212;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    thead th {
+      padding: 1rem 1.2rem;
+      text-align: left;
+    }
+    tbody tr {
+      border-bottom: 1px solid #333;
+      transition: background-color 0.3s ease;
+      cursor: default;
+    }
+    tbody tr:hover {
+      background-color: #007961bb;
+    }
+    tbody td {
+      padding: 0.9rem 1.2rem;
+      color: #ccc;
+    }
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    /* Status badges */
+    .status {
+      display: inline-block;
+      padding: 0.3em 0.7em;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #121212;
+      user-select: none;
+    }
+    .status.active {
+      background-color: #00bfa5;
+      box-shadow: 0 0 6px #00bfa5cc;
+    }
+    .status.completed {
+      background-color: #1de9b6aa;
+      color: #004d40;
+      font-weight: 700;
+      box-shadow: 0 0 6px #1de9b699;
+    }
+    .status.error {
+      background-color: #ff5252;
+      color: #fff;
+      box-shadow: 0 0 6px #ff5252cc;
+    }
+
+    /* Search/filter box */
+    .search-box {
+      margin-bottom: 1.5rem;
+      max-width: 300px;
+      position: relative;
+    }
+    .search-box input[type="search"] {
+      width: 100%;
+      padding: 0.5rem 1rem;
+      border: 1px solid #2fa2c7;
+      border-radius: 12px;
+      background-color: #121212;
+      color: #eee;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+    .search-box input[type="search"]:focus {
+      outline: none;
+      border-color: #00bfa5;
+      box-shadow: 0 0 10px #00bfa5aa;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      thead {
+        display: none;
+      }
+      table, tbody, tr, td {
+        display: block;
+        width: 100%;
+      }
+      tr {
+        margin-bottom: 1rem;
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        box-shadow: 0 0 15px #00bfa5aa;
+      }
+      td {
+        padding-left: 50%;
+        position: relative;
+        text-align: right;
+        font-size: 0.9rem;
+        border-bottom: 1px solid #333;
+      }
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-weight: 600;
+        color: #00bfa5;
+        white-space: nowrap;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+      }
+      td:last-child {
+        border-bottom: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="container" role="banner">
+    <div class="logo" tabindex="0">Klavia Bot</div>
+    <nav role="navigation" aria-label="Primary Navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="tasks.html" aria-current="page">Tasks</a></li>
+        <li><a href="submit.html">Submit Task</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="admin.html">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container" role="main" tabindex="0">
+    <h1>Active Bottled Tasks</h1>
+
+    <div class="search-box" role="search" aria-label="Search tasks">
+      <input
+        type="search"
+        id="taskSearch"
+        placeholder="Search by username or status..."
+        aria-describedby="searchHelp"
+        autocomplete="off"
+      />
+    </div>
+
+    <table aria-describedby="taskCount" role="table" aria-live="polite" aria-relevant="all">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Races Bottled</th>
+          <th scope="col">Total Races</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody id="tasksTableBody">
+        <!-- JS will insert rows here -->
+      </tbody>
+    </table>
+
+    <p id="taskCount" style="margin-top: 1rem; font-style: italic; color: #777;">
+      Loading tasks...
+    </p>
+  </main>
+
+  <script>
+    // Simulate fetching task data from backend API or local JSON
+    // You should replace the fetch URL to your actual API endpoint
+    const TASK_DATA_URL = "/api/tasks"; // Update to real backend endpoint or JSON file
+
+    const tasksTableBody = document.getElementById('tasksTableBody');
+    const taskCountText = document.getElementById('taskCount');
+    const taskSearchInput = document.getElementById('taskSearch');
+
+    let tasksData = [];
+
+    // Utility to create a status badge element
+    function createStatusBadge(status) {
+      const span = document.createElement('span');
+      span.classList.add('status');
+      switch (status.toLowerCase()) {
+        case 'active':
+          span.classList.add('active');
+          span.textContent = 'Active';
+          break;
+        case 'completed':
+          span.classList.add('completed');
+          span.textContent = 'Completed';
+          break;
+        case 'error':
+          span.classList.add('error');
+          span.textContent = 'Error';
+          break;
+        default:
+          span.textContent = status;
+      }
+      return span;
+    }
+
+    function renderTasks(tasks) {
+      tasksTableBody.innerHTML = '';
+      if (tasks.length === 0) {
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.setAttribute('colspan', 4);
+        td.style.textAlign = 'center';
+        td.style.padding = '2rem 0';
+        td.style.color = '#555';
+        td.textContent = 'No tasks found.';
+        tr.appendChild(td);
+        tasksTableBody.appendChild(tr);
+        return;
+      }
+      tasks.forEach(task => {
+        const tr = document.createElement('tr');
+
+        // Username
+        const tdUsername = document.createElement('td');
+        tdUsername.textContent = task.username || '—';
+        tdUsername.setAttribute('data-label', 'Username');
+        tr.appendChild(tdUsername);
+
+        // Races Bottled
+        const tdRacesBottled = document.createElement('td');
+        tdRacesBottled.textContent = task.races_bottled !== undefined ? task.races_bottled : '—';
+        tdRacesBottled.setAttribute('data-label', 'Races Bottled');
+        tr.appendChild(tdRacesBottled);
+
+        // Total Races
+        const tdTotalRaces = document.createElement('td');
+        tdTotalRaces.textContent = task.total_races !== undefined ? task.total_races : '—';
+        tdTotalRaces.setAttribute('data-label', 'Total Races');
+        tr.appendChild(tdTotalRaces);
+
+        // Status
+        const tdStatus = document.createElement('td');
+        tdStatus.setAttribute('data-label', 'Status');
+        tdStatus.appendChild(createStatusBadge(task.status || 'Unknown'));
+        tr.appendChild(tdStatus);
+
+        tasksTableBody.appendChild(tr);
+      });
+
+      taskCountText.textContent = `Showing ${tasks.length} task${tasks.length === 1 ? '' : 's'}`;
+    }
+
+    async function fetchTasks() {
+      try {
+        const response = await fetch(TASK_DATA_URL, {cache: "no-store"});
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        tasksData = data.tasks || [];
+        renderTasks(tasksData);
+      } catch (error) {
+        taskCountText.textContent = 'Failed to load tasks. Please try again later.';
+        console.error('Fetch tasks error:', error);
+      }
+    }
+
+    // Search filter handler
+    taskSearchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      if (!query) {
+        renderTasks(tasksData);
+        return;
+      }
+      const filtered = tasksData.filter(task =>
+        (task.username && task.username.toLowerCase().includes(query)) ||
+        (task.status && task.status.toLowerCase().includes(query))
+      );
+      renderTasks(filtered);
+    });
+
+    // Initial load
+    fetchTasks();
+
+    // Optional: poll for updates every 30s
+    setInterval(fetchTasks, 30000);
+  </script>
+</body>
+</html>
