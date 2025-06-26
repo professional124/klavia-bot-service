@@ -1,1 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Panel - Klavia Bot</title>
 
+  <!-- Favicon -->
+  <link rel="icon" href="/static/favicon.ico" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <style>
+    /* Base reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a {
+      color: #1de9b6;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover,
+    a:focus {
+      color: #00bfa5;
+      outline: none;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      background-color: #121212cc;
+      backdrop-filter: saturate(180%) blur(10px);
+      z-index: 999;
+    }
+    header .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #1de9b6;
+      letter-spacing: 0.05em;
+      user-select: none;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      margin: 0; padding: 0;
+    }
+    nav ul li {
+      position: relative;
+    }
+    nav ul li a {
+      font-weight: 500;
+      font-size: 1rem;
+      padding: 0.25rem 0;
+      display: inline-block;
+      border-bottom: 2px solid transparent;
+    }
+    nav ul li a:hover,
+    nav ul li a:focus {
+      border-bottom-color: #1de9b6;
+    }
+    nav ul li a[aria-current="page"] {
+      border-bottom-color: #00bfa5;
+      font-weight: 600;
+    }
+
+    main {
+      margin-top: 2rem;
+    }
+    h1 {
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #00bfa5;
+      text-align: center;
+    }
+
+    section.admin-section {
+      background-color: #1e1e1e;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+    }
+    section.admin-section h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: #1de9b6;
+      font-weight: 600;
+      border-bottom: 2px solid #00bfa5;
+      padding-bottom: 0.5rem;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: #ddd;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #333;
+      text-align: left;
+    }
+    th {
+      background-color: #272727;
+      font-weight: 600;
+      color: #00bfa5;
+    }
+    tbody tr:hover {
+      background-color: #333;
+    }
+
+    /* Buttons */
+    button {
+      background-color: #00bfa5;
+      color: #121212;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    button:hover,
+    button:focus {
+      background-color: #007961;
+      outline: none;
+      box-shadow: 0 0 10px #007961aa;
+    }
+    .btn-danger {
+      background-color: #e53935;
+      color: white;
+    }
+    .btn-danger:hover,
+    .btn-danger:focus {
+      background-color: #b71c1c;
+      box-shadow: 0 0 12px #b71c1caa;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      nav ul {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      th {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+      tr {
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #444;
+      }
+      td {
+        padding-left: 50%;
+        position: relative;
+        text-align: right;
+      }
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        font-weight: 600;
+        color: #00bfa5;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="container" role="banner">
+    <div class="logo" tabindex="0">Klavia Bot Admin</div>
+    <nav role="navigation" aria-label="Primary Navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="tasks.html">Tasks</a></li>
+        <li><a href="submit.html">Submit Task</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="admin.html" aria-current="page">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container" role="main" tabindex="0">
+    <h1>Admin Dashboard</h1>
+
+    <section class="admin-section" aria-labelledby="active-tasks-heading">
+      <h2 id="active-tasks-heading">Active Tasks</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Status</th>
+            <th>Races Completed</th>
+            <th>Total Races</th>
+            <th>Last Updated</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tasks-table-body">
+          <!-- Tasks will be dynamically inserted here -->
+          <tr><td colspan="6" style="text-align:center; color:#666;">Loading tasks...</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="admin-section" aria-labelledby="keys-management-heading">
+      <h2 id="keys-management-heading">Key Management</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Slots</th>
+            <th>Used Slots</th>
+            <th>Expires</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="keys-table-body">
+          <!-- Keys will be dynamically inserted here -->
+          <tr><td colspan="5" style="text-align:center; color:#666;">Loading keys...</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="admin-section" aria-labelledby="log-access-heading">
+      <h2 id="log-access-heading">Logs Access</h2>
+      <p>Click a username below to view detailed logs:</p>
+      <ul id="logs-list" style="list-style: none; padding-left: 0;">
+        <!-- Log links inserted here -->
+        <li style="color:#666; text-align:center;">Loading logs...</li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    // Example: Fetch and populate tables (replace URLs with your API endpoints)
+    async function fetchTasks() {
+      try {
+        // Simulated fetch; replace with actual fetch('api/tasks')
+        // let response = await fetch('/api/tasks');
+        // let tasks = await response.json();
+
+        // Demo static data:
+        let tasks = [
+          { username: "racer1", status: "Running", completed: 5, total: 10, updated: "2025-06-26 10:00" },
+          { username: "racer2", status: "Idle", completed: 2, total: 10, updated: "2025-06-26 09:30" }
+        ];
+
+        const tbody = document.getElementById('tasks-table-body');
+        tbody.innerHTML = "";
+        tasks.forEach(task => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td data-label="Username">${task.username}</td>
+            <td data-label="Status">${task.status}</td>
+            <td data-label="Races Completed">${task.completed}</td>
+            <td data-label="Total Races">${task.total}</td>
+            <td data-label="Last Updated">${task.updated}</td>
+            <td data-label="Actions">
+              <button onclick="alert('Kill task for ${task.username} (implement backend)')">Kill</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error('Error fetching tasks:', err);
+      }
+    }
+
+    async function fetchKeys() {
+      try {
+        // Simulated fetch; replace with actual fetch('/api/keys')
+        let keys = [
+          { key: "ABCD-1234-EFGH", slots: 5, used: 3, expires: "2025-12-31" },
+          { key: "XYZW-5678-QWER", slots: 1, used: 0, expires: "Never" }
+        ];
+
+        const tbody = document.getElementById('keys-table-body');
+        tbody.innerHTML = "";
+        keys.forEach(k => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td data-label="Key">${k.key}</td>
+            <td data-label="Slots">${k.slots}</td>
+            <td data-label="Used Slots">${k.used}</td>
+            <td data-label="Expires">${k.expires}</td>
+            <td data-label="Actions">
+              <button class="btn-danger" onclick="alert('Delete key ${k.key} (implement backend)')">Delete</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error('Error fetching keys:', err);
+      }
+    }
+
+    async function fetchLogs() {
+      try {
+        // Simulated fetch; replace with actual fetch('/api/logs')
+        let logs = ["racer1.log", "racer2.log"];
+
+        const ul = document.getElementById('logs-list');
+        ul.innerHTML = "";
+        logs.forEach(log => {
+          const username = log.replace('.log', '');
+          const li = document.createElement('li');
+          li.innerHTML = `<a href="/logs/${log}" target="_blank" rel="noopener">${username}</a>`;
+          ul.appendChild(li);
+        });
+      } catch (err) {
+        console.error('Error fetching logs:', err);
+      }
+    }
+
+    // Initial data load
+    fetchTasks();
+    fetchKeys();
+    fetchLogs();
+  </script>
+</body>
+</html>
